@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>穗星数据库 - 管理界面</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div id="admin">
+    <h1>穗星数据库 管理界面</h1>
+
+    <nav class="admin-nav">
+      <button class="nav-btn active" data-tab="characters">角色管理</button>
+      <button class="nav-btn" data-tab="commands">常用指令</button>
+    </nav>
+
+    <!-- 角色管理 -->
+    <div id="tab-characters" class="tab-content active">
+      <h2>角色管理 <span class="count" id="charCount"></span></h2>
+      <div class="toolbar">
+        <input type="text" id="charSearch" placeholder="搜索角色名...">
+        <button class="btn-primary" id="addCharBtn">+ 添加角色</button>
+      </div>
+      <div id="charList" class="data-list"></div>
+    </div>
+
+    <!-- 指令管理 -->
+    <div id="tab-commands" class="tab-content">
+      <h2>常用指令管理 <span class="count" id="cmdCount"></span></h2>
+      <div class="toolbar">
+        <input type="text" id="cmdSearch" placeholder="搜索指令...">
+        <button class="btn-primary" id="addCmdBtn">+ 添加指令</button>
+      </div>
+      <div id="cmdList" class="data-list"></div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <h3 id="modalTitle">编辑</h3>
+        <div id="modalFields"></div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="modalCancel">取消</button>
+          <button class="btn-primary" id="modalSave">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 提示 -->
+    <div id="toast" class="toast"></div>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>
