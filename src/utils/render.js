@@ -24,9 +24,8 @@ export function el(tag, attrs, ...children) {
 export function createCmdCard(cmd, desc) {
   const codeDiv = el('div', { className: 'cmd-card__code' }, cmd);
 
-  const descDiv = desc
-    ? el('div', { className: 'cmd-card__desc' }, desc)
-    : null;
+  const descDiv = el('div', { className: 'cmd-card__desc' });
+  if (desc) descDiv.textContent = desc;
 
   const copyBtn = el('button', {
     className: 'btn btn--sm btn--primary',
@@ -43,10 +42,7 @@ export function createCmdCard(cmd, desc) {
   });
 
   const actionsDiv = el('div', { className: 'cmd-card__actions' }, copyBtn);
-  const card = el('div', { className: 'cmd-card' }, codeDiv);
-
-  if (descDiv) card.appendChild(descDiv);
-  card.appendChild(actionsDiv);
+  const card = el('div', { className: 'cmd-card' }, codeDiv, descDiv, actionsDiv);
 
   return card;
 }

@@ -72,16 +72,14 @@ export function renderWeapons() {
         style: { display: j === 0 ? 'block' : 'none' },
       });
       grouped[type.id][star].forEach(w => {
-        const descSpan = el('span', null,
-          '（',
-          el('span', { className: `star-${w.star}`, textContent: w.name }),
-          '）'
-        );
-        const card = createCmdCard(w.cmd);
+        const card = createCmdCard(w.cmd, `（${w.name}）`);
+        // 替换描述为带颜色的版本
         const descDiv = card.querySelector('.cmd-card__desc');
         if (descDiv) {
           descDiv.textContent = '';
-          descDiv.appendChild(descSpan);
+          descDiv.appendChild(document.createTextNode('（'));
+          descDiv.appendChild(el('span', { className: `star-${w.star}`, textContent: w.name }));
+          descDiv.appendChild(document.createTextNode('）'));
         }
         starSection.appendChild(card);
       });

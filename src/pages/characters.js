@@ -7,17 +7,18 @@ export function renderCharacters() {
 
   characters.forEach(c => {
     const starClass = c.star === 5 ? 'star-5' : 'star-4';
-    const descEl = el('span', null,
-      '（',
-      el('span', { className: starClass, textContent: c.name }),
-      '）'
-    );
-    const card = createCmdCard(c.cmd);
+    const descText = `（${c.name}）`;
+    const card = createCmdCard(c.cmd, descText);
+
+    // 替换描述中的名字为带颜色的版本
     const descDiv = card.querySelector('.cmd-card__desc');
     if (descDiv) {
       descDiv.textContent = '';
-      descDiv.appendChild(descEl);
+      descDiv.appendChild(document.createTextNode('（'));
+      descDiv.appendChild(el('span', { className: starClass, textContent: c.name }));
+      descDiv.appendChild(document.createTextNode('）'));
     }
+
     frag.appendChild(card);
   });
 
