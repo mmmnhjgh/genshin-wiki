@@ -1,83 +1,121 @@
 import scenes from '../data/scenes.json';
 import { createCmdCard, createSectionTitle, el } from '../utils/render.js';
 
-function getVersions() {
-  const set = new Set();
-  scenes.forEach(s => set.add(s.version));
-  return [...set].sort((a, b) => parseFloat(a) - parseFloat(b));
-}
-
-function getVersionRanges(versions) {
-  const ranges = [];
-  const grouped = {};
-  versions.forEach(v => {
-    const major = Math.floor(parseFloat(v));
-    const key = `${major}.0`;
-    if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(v);
-  });
-  Object.keys(grouped).sort((a, b) => parseFloat(a) - parseFloat(b)).forEach(key => {
-    const vs = grouped[key];
-    const label = vs.length === 1 ? `v${vs[0]}` : `v${vs[0]} ~ v${vs[vs.length - 1]}`;
-    ranges.push({ key, label, versions: vs });
-  });
-  return ranges;
-}
+const CATEGORY_LABELS = {
+  'BigWorld探索': '大世界',
+  '尘歌壶': '尘歌壶',
+  '主世界': '主世界',
+  '剧情秘境': '剧情秘境',
+  '深境螺旋': '深境螺旋',
+  '教程': '教程副本',
+  '其他': '其他',
+};
 
 export function renderScenes() {
   const frag = document.createDocumentFragment();
-  frag.appendChild(createSectionTitle('所有场景/秘境ID'));
+  frag.appendChild(createSectionTitle('场景/秘境ID'));
 
-  const versions = getVersions();
-  const ranges = getVersionRanges(versions);
+  const cats = [...new Set(scenes.map(s => s.category))];
+  const catLabels = cats.map(c => ({ id: c, label: CATEGORY_LABELS[c] || c }));
 
-  // Version tabs
-  const nav = el('div', { className: 'tab-nav', id: 'sceneVersionNav' });
-  ranges.forEach((range, i) => {
+  const nav = el('div', { className: 'tab-nav', id: 'sceneCatNav' });
+  const allBtn = el('button', {
+    className: 'btn active',
+    textContent: '全部',
+    dataset: { cat: 'all' },
+    onClick() { switchCat('all'); },
+  });
+  nav.appendChild(allBtn);
+
+  catLabels.forEach(c => {
+    const count = scenes.filter(s => s.category === c.id).length;
     const btn = el('button', {
-      className: `btn${i === 0 ? ' active' : ''}`,
-      textContent: range.label,
-      onClick() { switchSceneVersion(range.key); },
+      className: 'btn',
+      textContent: `${c.label} (${count})`,
+      dataset: { cat: c.id },
+      onClick() { switchCat(c.id); },
     });
-    btn.dataset.version = range.key;
     nav.appendChild(btn);
   });
   frag.appendChild(nav);
 
-  // Version sections
-  ranges.forEach((range, i) => {
-    const section = el('div', {
-      id: `sceneVer${range.key.replace('.', '')}`,
-      style: { display: i === 0 ? 'block' : 'none' },
+  const searchInput = el('input', {
+    type: 'text',
+    className: 'search-input',
+    placeholder: '搜索场景名称或ID...',
+    style: { width: '100%', marginBottom: '12px' },
+  });
+  frag.appendChild(searchInput);
+
+  const container = el('div', { id: 'sceneContainer' });
+  frag.appendChild(container);
+
+  const countInfo = el('div', { className: 'artifact-note', id: 'sceneCount' });
+  frag.appendChild(countInfo);
+
+  // 结果提示
+  const tip = el('div', { className: 'artifact-note', textContent: '提示：使用 /tp x y z sceneID 传送到对应场景' });
+  frag.appendChild(tip);
+
+  function renderList(filter) {
+    container.innerHTML = '';
+    const list = filter
+      ? scenes.filter(s => s.name.toLowerCase().includes(filter) || String(s.id).includes(filter))
+      : scenes;
+    countInfo.textContent = `共 ${list.length} 个场景`;
+
+    // 按类别分组
+    const grouped = {};
+    list.forEach(s => {
+      if (!grouped[s.category]) grouped[s.category] = [];
+      grouped[s.category].push(s);
     });
 
-    range.versions.forEach(ver => {
-      const verScenes = scenes.filter(s => s.version === ver);
-      if (verScenes.length === 0) return;
+    for (const [cat, items] of Object.entries(grouped)) {
+      const subtitle = el('div', { className: 'sub-title', textContent: CATEGORY_LABELS[cat] || cat });
+      container.appendChild(subtitle);
 
-      section.appendChild(el('div', {
-        className: 'sub-title',
-        textContent: `v${ver}`,
-        style: { marginTop: '12px' },
-      }));
-
-      verScenes.forEach(s => {
-        section.appendChild(createCmdCard(s.cmd, `（${s.name}）`));
+      const grid = el('div', { className: 'info-grid' });
+      items.forEach(s => {
+        const chip = el('div', { className: 'info-chip' });
+        chip.appendChild(el('div', { className: 'info-chip__id', textContent: String(s.id) }));
+        chip.appendChild(el('div', { className: 'info-chip__name', textContent: s.name }));
+        grid.appendChild(chip);
       });
+      container.appendChild(grid);
+    }
+  }
+
+  function switchCat(cat) {
+    nav.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+    nav.querySelectorAll('.btn').forEach(b => {
+      if ((cat === 'all' && b.dataset.cat === 'all') || b.dataset.cat === cat) b.classList.add('active');
     });
+    searchInput.value = '';
+    if (cat === 'all') {
+      renderList('');
+    } else {
+      container.innerHTML = '';
+      const filtered = scenes.filter(s => s.category === cat);
+      countInfo.textContent = `共 ${filtered.length} 个场景`;
+      const subtitle = el('div', { className: 'sub-title', textContent: CATEGORY_LABELS[cat] || cat });
+      container.appendChild(subtitle);
+      const grid = el('div', { className: 'info-grid' });
+      filtered.forEach(s => {
+        const chip = el('div', { className: 'info-chip' });
+        chip.appendChild(el('div', { className: 'info-chip__id', textContent: String(s.id) }));
+        chip.appendChild(el('div', { className: 'info-chip__name', textContent: s.name }));
+        grid.appendChild(chip);
+      });
+      container.appendChild(grid);
+    }
+  }
 
-    frag.appendChild(section);
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    renderList(q);
   });
 
+  renderList('');
   return frag;
-}
-
-function switchSceneVersion(versionKey) {
-  document.querySelectorAll('#sceneVersionNav ~ div[id^="sceneVer"]').forEach(s => { s.style.display = 'none'; });
-  const target = document.getElementById(`sceneVer${versionKey.replace('.', '')}`);
-  if (target) target.style.display = 'block';
-
-  document.querySelectorAll('#sceneVersionNav .btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.version === versionKey);
-  });
 }

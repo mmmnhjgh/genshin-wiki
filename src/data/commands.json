@@ -1,32 +1,272 @@
 [
-  {"cmd": "/prop unlockmap 1", "desc": "解锁全地图", "category": "基础"},
-  {"cmd": "/unlockall", "desc": "解锁全功能", "category": "基础"},
-  {"cmd": "/give avatars lv100 c6 sl15", "desc": "全角色100级6命15级天赋", "category": "角色"},
-  {"cmd": "/give weapons lv91 x2 r5", "desc": "全武器精5", "category": "武器"},
-  {"cmd": "/setprop player_level 60", "desc": "冒险等级60级", "category": "基础"},
-  {"cmd": "/prop worldlevel 9", "desc": "世界等级9", "category": "基础"},
-  {"cmd": "/give mats x9999", "desc": "含材料，皮肤等道具", "category": "材料"},
-  {"cmd": "/give 104003 lv200 x1000000", "desc": "经验书", "category": "材料"},
-  {"cmd": "/give 201 x100000", "desc": "十万原石", "category": "材料"},
-  {"cmd": "/give 202 x100000000", "desc": "一亿摩拉", "category": "材料"},
-  {"cmd": "/give 223 x10000", "desc": "一万纠缠之缘", "category": "材料"},
-  {"cmd": "/give 224 x10000", "desc": "一万相遇之缘", "category": "材料"},
-  {"cmd": "/give 1201 x1", "desc": "获取珍珠纪行", "category": "材料"},
-  {"cmd": "/give 1202 x999", "desc": "获取月卡", "category": "材料"},
-  {"cmd": "/heal", "desc": "恢复全队血量", "category": "功能"},
-  {"cmd": "/e get", "desc": "恢复元素能量", "category": "功能"},
-  {"cmd": "/killall", "desc": "杀死所有怪物", "category": "功能"},
-  {"cmd": "/achievement grantall", "desc": "达成全部成就", "category": "功能"},
-  {"cmd": "/setConst 6 all", "desc": "全角色满命", "category": "功能"},
-  {"cmd": "/setprop unlimitedenergy 1", "desc": "无限能量", "category": "功能"},
-  {"cmd": "/setprop godmode 1", "desc": "无敌", "category": "功能"},
-  {"cmd": "/setstats cdr 100%", "desc": "无cd", "category": "功能"},
-  {"cmd": "/prop unlimitedstamina on", "desc": "无限体力", "category": "功能"},
-  {"cmd": "/prop setopenstate all", "desc": "解锁所有功能访问并包括完成所有教程", "category": "功能"},
-  {"cmd": "/quest finish +任务ID", "desc": "完成/跳过任务", "category": "功能"},
-  {"cmd": "/resetconst", "desc": "清空当前角色的命座 需重登", "category": "危险"},
-  {"cmd": "/resetconst all", "desc": "清空全部角色的命座 需重登", "category": "危险"},
-  {"cmd": "/quest clear all", "desc": "完全重置你的任务进度", "category": "危险"},
-  {"cmd": "/clear all", "desc": "重置该帐号上的所有内容", "category": "危险"},
-  {"cmd": "/item clear", "desc": "清空你的背包", "category": "危险"}
+  {
+    "cmd": "/prop unlockmap 1",
+    "desc": "解锁全地图",
+    "category": "基础"
+  },
+  {
+    "cmd": "/unlockall",
+    "desc": "解锁全功能",
+    "category": "基础"
+  },
+  {
+    "cmd": "/give avatars lv100 c6 sl15",
+    "desc": "全角色100级6命15级天赋",
+    "category": "角色"
+  },
+  {
+    "cmd": "/give weapons lv91 x2 r5",
+    "desc": "全武器精5",
+    "category": "武器"
+  },
+  {
+    "cmd": "/setprop player_level 60",
+    "desc": "冒险等级60级",
+    "category": "基础"
+  },
+  {
+    "cmd": "/prop worldlevel 9",
+    "desc": "世界等级9",
+    "category": "基础"
+  },
+  {
+    "cmd": "/give mats x9999",
+    "desc": "含材料，皮肤等道具",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 104003 lv200 x1000000",
+    "desc": "经验书",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 201 x100000",
+    "desc": "十万原石",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 202 x100000000",
+    "desc": "一亿摩拉",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 223 x10000",
+    "desc": "一万纠缠之缘",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 224 x10000",
+    "desc": "一万相遇之缘",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 1201 x1",
+    "desc": "获取珍珠纪行",
+    "category": "材料"
+  },
+  {
+    "cmd": "/give 1202 x999",
+    "desc": "获取月卡",
+    "category": "材料"
+  },
+  {
+    "cmd": "/heal",
+    "desc": "恢复全队血量",
+    "category": "功能"
+  },
+  {
+    "cmd": "/e get",
+    "desc": "恢复元素能量",
+    "category": "功能"
+  },
+  {
+    "cmd": "/killall",
+    "desc": "杀死所有怪物",
+    "category": "功能"
+  },
+  {
+    "cmd": "/achievement grantall",
+    "desc": "达成全部成就",
+    "category": "功能"
+  },
+  {
+    "cmd": "/setConst 6 all",
+    "desc": "全角色满命",
+    "category": "功能"
+  },
+  {
+    "cmd": "/setprop unlimitedenergy 1",
+    "desc": "无限能量",
+    "category": "功能"
+  },
+  {
+    "cmd": "/setprop godmode 1",
+    "desc": "无敌",
+    "category": "功能"
+  },
+  {
+    "cmd": "/setstats cdr 100%",
+    "desc": "无cd",
+    "category": "功能"
+  },
+  {
+    "cmd": "/prop unlimitedstamina on",
+    "desc": "无限体力",
+    "category": "功能"
+  },
+  {
+    "cmd": "/prop setopenstate all",
+    "desc": "解锁所有功能访问并包括完成所有教程",
+    "category": "功能"
+  },
+  {
+    "cmd": "/quest finish +任务ID",
+    "desc": "完成/跳过任务",
+    "category": "功能"
+  },
+  {
+    "cmd": "/resetconst",
+    "desc": "清空当前角色的命座 需重登",
+    "category": "危险"
+  },
+  {
+    "cmd": "/resetconst all",
+    "desc": "清空全部角色的命座 需重登",
+    "category": "危险"
+  },
+  {
+    "cmd": "/quest clear all",
+    "desc": "完全重置你的任务进度",
+    "category": "危险"
+  },
+  {
+    "cmd": "/clear all",
+    "desc": "重置该帐号上的所有内容",
+    "category": "危险"
+  },
+  {
+    "cmd": "/item clear",
+    "desc": "清空你的背包",
+    "category": "危险"
+  },
+  {
+    "cmd": "/prop god on",
+    "desc": "无敌",
+    "category": "功能"
+  },
+  {
+    "cmd": "/prop ns on",
+    "desc": "无限体力",
+    "category": "功能"
+  },
+  {
+    "cmd": "/prop ue on",
+    "desc": "无限能量",
+    "category": "功能"
+  },
+  {
+    "cmd": "/give 102 x1880200",
+    "desc": "冒险等阶升60级",
+    "category": "基础"
+  },
+  {
+    "cmd": "/give 121 x10900",
+    "desc": "尘歌壶信任值升到10级",
+    "category": "基础"
+  },
+  {
+    "cmd": "/prop wl 8",
+    "desc": "设置世界等级8",
+    "category": "基础"
+  },
+  {
+    "cmd": "/prop ut 12",
+    "desc": "一键解锁深渊12层",
+    "category": "功能"
+  },
+  {
+    "cmd": "/prop bp 50",
+    "desc": "设置纪行等级50",
+    "category": "基础"
+  },
+  {
+    "cmd": "/setfetterlevel 10",
+    "desc": "设置好感等级10",
+    "category": "功能"
+  },
+  {
+    "cmd": "/h",
+    "desc": "回血",
+    "category": "功能"
+  },
+  {
+    "cmd": "/kill 0",
+    "desc": "自杀",
+    "category": "危险"
+  },
+  {
+    "cmd": "/spawn 2008 x25",
+    "desc": "全队充能",
+    "category": "功能"
+  },
+  {
+    "cmd": "/pos",
+    "desc": "查看坐标",
+    "category": "功能"
+  },
+  {
+    "cmd": "/give all x9999 lv90 c6 r5 sl10",
+    "desc": "获取全部物品",
+    "category": "材料"
+  },
+  {
+    "cmd": "/kick",
+    "desc": "重登",
+    "category": "功能"
+  },
+  {
+    "cmd": "/clear wp lv90 r5 5*",
+    "desc": "清空武器",
+    "category": "危险"
+  },
+  {
+    "cmd": "/clear art lv20 5*",
+    "desc": "清空圣遗物",
+    "category": "危险"
+  },
+  {
+    "cmd": "/clear mat",
+    "desc": "清空材料",
+    "category": "危险"
+  },
+  {
+    "cmd": "/coop",
+    "desc": "进入多人游戏",
+    "category": "功能"
+  },
+  {
+    "cmd": "/tpall",
+    "desc": "[多人游戏]全体传送",
+    "category": "功能"
+  },
+  {
+    "cmd": "/list uid",
+    "desc": "玩家列表",
+    "category": "功能"
+  },
+  {
+    "cmd": "/say 大家好啊~",
+    "desc": "发送广播",
+    "category": "功能"
+  },
+  {
+    "cmd": "/prop fly on",
+    "desc": "风之翼",
+    "category": "功能"
+  },
+  {
+    "cmd": "/tp ~ ~100 ~",
+    "desc": "芜湖~起飞！",
+    "category": "功能"
+  }
 ]

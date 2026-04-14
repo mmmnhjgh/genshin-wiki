@@ -14,11 +14,13 @@ const navGroups = [
     ],
   },
   {
-    label: '未来消息组',
+    label: '数据查询组',
     items: [
+      { id: 'itemSection', label: '物品' },
+      { id: 'achievementSection', label: '成就' },
+      { id: 'activitySection', label: '活动' },
       { id: 'spiralSection', label: '深境螺旋' },
       { id: 'questNewSection', label: '祈愿卡池' },
-      { id: 'eventSection', label: '活动' },
     ],
   },
 ];

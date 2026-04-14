@@ -6,6 +6,9 @@ import { renderArtifacts } from '../pages/artifacts.js';
 import { renderBosses } from '../pages/bosses.js';
 import { renderScenes } from '../pages/scenes.js';
 import { renderMonsters } from '../pages/monsters.js';
+import { renderItems } from '../pages/items.js';
+import { renderAchievements } from '../pages/achievements.js';
+import { renderActivities } from '../pages/activities.js';
 import { renderSpiral } from '../pages/spiral.js';
 import { renderGacha } from '../pages/gacha.js';
 
@@ -16,8 +19,11 @@ const pageRenderers = {
   weaponSection: { title: '武器数据库', render: renderWeapons },
   artifactSection: { title: '圣遗物数据库', render: renderArtifacts },
   bossSection: { title: '值得铭记的强敌', render: renderBosses },
-  sceneSection: { title: '所有场景/秘境ID', render: renderScenes },
+  sceneSection: { title: '场景/秘境ID', render: renderScenes },
   dreamSection: { title: '自定义怪物属性', render: renderMonsters },
+  itemSection: { title: '物品数据库', render: renderItems },
+  achievementSection: { title: '成就数据库', render: renderAchievements },
+  activitySection: { title: '活动数据库', render: renderActivities },
   spiralSection: { title: '深境螺旋', render: renderSpiral },
   questNewSection: { title: '祈愿卡池', render: renderGacha },
 };
@@ -53,35 +59,6 @@ export function renderAllSections() {
     section.appendChild(wrapper);
     sections.push(section);
   }
-
-  // 占位区块
-  const placeholders = [
-    'itemSection', 'questSection', 'achievementSection',
-    'geographySection', 'tutorialSection', 'eventSection', 'loadTipSection',
-  ];
-
-  placeholders.forEach(id => {
-    const section = document.createElement('section');
-    section.id = id;
-    section.className = 'content-section';
-    section.style.display = 'none';
-
-    const wrapper = document.createElement('div');
-    wrapper.className = 'section-wrapper';
-
-    const title = document.createElement('h2');
-    title.className = 'section-title';
-    title.textContent = id.replace('Section', '');
-    wrapper.appendChild(title);
-
-    const card = document.createElement('div');
-    card.className = 'cmd-card';
-    card.innerHTML = '<div class="cmd-card__desc">模块开发中，敬请期待...</div>';
-    wrapper.appendChild(card);
-
-    section.appendChild(wrapper);
-    sections.push(section);
-  });
 
   return sections;
 }
