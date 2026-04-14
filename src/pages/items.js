@@ -66,7 +66,7 @@ onClick() {
         switchCategory(cat);
       },
     });
-    nav.appendChild(btn);
+    catNav.appendChild(btn);
   });
   frag.appendChild(catNav);
 

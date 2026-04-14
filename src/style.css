@@ -262,6 +262,9 @@ body::before {
   transition: all 0.2s;
 }
 .info-chip:hover { border-color: var(--border-color-strong); transform: translateY(-1px); }
+.info-chip--copy { cursor: pointer; }
+.info-chip--copy:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.info-chip--copy:active { transform: scale(0.97); }
 .info-chip__id { font-size: 0.8rem; font-weight: 600; color: var(--accent); font-family: monospace; }
 .info-chip__name { font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; }
 

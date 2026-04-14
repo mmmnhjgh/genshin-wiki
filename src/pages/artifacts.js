@@ -1,5 +1,5 @@
 import artifactsData from '../data/artifacts.json';
-import { createSectionTitle, el } from '../utils/render.js';
+import { createSectionTitle, createSubTitle, el } from '../utils/render.js';
 import { copyText } from '../utils/copy.js';
 
 const { sets, mainStats, subStats, slotNames, slotMainStats } = artifactsData;

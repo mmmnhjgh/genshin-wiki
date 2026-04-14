@@ -1,5 +1,6 @@
 import scenes from '../data/scenes.json';
-import { createCmdCard, createSectionTitle, el } from '../utils/render.js';
+import { createSectionTitle, el } from '../utils/render.js';
+import { copyText } from '../utils/copy.js';
 
 const CATEGORY_LABELS = {
   'BigWorld探索': '大世界',
@@ -54,7 +55,7 @@ export function renderScenes() {
   frag.appendChild(countInfo);
 
   // 结果提示
-  const tip = el('div', { className: 'artifact-note', textContent: '提示：使用 /tp x y z sceneID 传送到对应场景' });
+  const tip = el('div', { className: 'artifact-note', textContent: '提示：点击场景卡片即可复制传送指令' });
   frag.appendChild(tip);
 
   function renderList(filter) {
@@ -77,9 +78,11 @@ export function renderScenes() {
 
       const grid = el('div', { className: 'info-grid' });
       items.forEach(s => {
-        const chip = el('div', { className: 'info-chip' });
+        const cmd = s.cmd || `/tp 0 400 0 ${s.id}`;
+        const chip = el('div', { className: 'info-chip info-chip--copy', title: `点击复制: ${cmd}` });
         chip.appendChild(el('div', { className: 'info-chip__id', textContent: String(s.id) }));
         chip.appendChild(el('div', { className: 'info-chip__name', textContent: s.name }));
+        chip.addEventListener('click', () => copyText(cmd));
         grid.appendChild(chip);
       });
       container.appendChild(grid);
@@ -102,9 +105,11 @@ export function renderScenes() {
       container.appendChild(subtitle);
       const grid = el('div', { className: 'info-grid' });
       filtered.forEach(s => {
-        const chip = el('div', { className: 'info-chip' });
+        const cmd = s.cmd || `/tp 0 400 0 ${s.id}`;
+        const chip = el('div', { className: 'info-chip info-chip--copy', title: `点击复制: ${cmd}` });
         chip.appendChild(el('div', { className: 'info-chip__id', textContent: String(s.id) }));
         chip.appendChild(el('div', { className: 'info-chip__name', textContent: s.name }));
+        chip.addEventListener('click', () => copyText(cmd));
         grid.appendChild(chip);
       });
       container.appendChild(grid);
