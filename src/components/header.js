@@ -1,29 +1,50 @@
 import { searchContent } from '../utils/search.js';
 
 export function renderHeader() {
-  const header = document.createElement('div');
-  header.className = 'header';
-  header.innerHTML = `
-    <h1>穗星数据库-七神研究所 v2.0
-      <div class="version">当前游戏版本：6.3</div>
-      <div class="countdown"></div>
-      <div>
-        <span>PC端/手机端可直接一键复制</span>
-        <span style="margin: 0 10px;">|</span>
-        <a href="http://110.42.109.118:8080/" target="_blank">原神6.3使用指令请前往</a>
-        <div class="search-container" style="display: inline-block; position: relative;">
-          <input type="text" id="searchInput" placeholder="搜索指令或名称..."
-                 style="padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 6px;
-                        font-size: 14px; width: 200px; outline: none;">
-          <div id="searchClear" style="position: absolute; right: 8px; top: 50%;
-                transform: translateY(-50%); cursor: pointer; color: #999; display: none;">×</div>
-        </div>
-      </div>
-    </h1>
-  `;
+  const header = document.createElement('header');
+  header.className = 'site-header section-wrapper';
 
-  const input = header.querySelector('#searchInput');
-  const clearBtn = header.querySelector('#searchClear');
+  const titleWrap = document.createElement('div');
+  const title = document.createElement('h1');
+  title.className = 'site-title';
+  title.textContent = '穗星数据库 v2.1';
+  const subtitle = document.createElement('small');
+  subtitle.textContent = '当前游戏版本：6.3';
+  title.appendChild(subtitle);
+  titleWrap.appendChild(title);
+
+  const actions = document.createElement('div');
+  actions.className = 'header-actions';
+
+  const searchBox = document.createElement('div');
+  searchBox.className = 'search-box';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'search-input';
+  input.id = 'searchInput';
+  input.placeholder = '搜索指令或名称...';
+  input.autocomplete = 'off';
+
+  const clearBtn = document.createElement('span');
+  clearBtn.className = 'search-clear';
+  clearBtn.id = 'searchClear';
+  clearBtn.textContent = '×';
+
+  searchBox.appendChild(input);
+  searchBox.appendChild(clearBtn);
+
+  const themeBtn = document.createElement('button');
+  themeBtn.className = 'theme-toggle';
+  themeBtn.id = 'themeToggle';
+  themeBtn.title = '切换主题';
+  themeBtn.textContent = '☀️';
+
+  actions.appendChild(searchBox);
+  actions.appendChild(themeBtn);
+
+  header.appendChild(titleWrap);
+  header.appendChild(actions);
 
   let debounceTimer;
   input.addEventListener('input', () => {
@@ -37,6 +58,14 @@ export function renderHeader() {
     input.value = '';
     clearBtn.style.display = 'none';
     searchContent('');
+  });
+
+  themeBtn.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
   });
 
   return header;

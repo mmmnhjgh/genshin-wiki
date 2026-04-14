@@ -9,24 +9,52 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// 白名单：允许访问的数据文件
+const ALLOWED_TYPES = [
+  'characters', 'weapons', 'bosses', 'scenes', 'gacha',
+  'commands', 'artifacts', 'stats',
+];
+
+// 数据目录
+const DATA_DIR = path.join(__dirname, 'src', 'data');
+
+// 验证文件路径安全性
+function safePath(type) {
+  if (!ALLOWED_TYPES.includes(type)) return null;
+  const filePath = path.join(DATA_DIR, `${type}.json`);
+  const resolved = path.resolve(filePath);
+  if (!resolved.startsWith(DATA_DIR)) return null;
+  return resolved;
+}
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // 数据读取API
 app.get('/api/data/:type', (req, res) => {
-  const filePath = path.join(__dirname, 'src', 'data', `${req.params.type}.json`);
-  if (!fs.existsSync(filePath)) {
+  const filePath = safePath(req.params.type);
+  if (!filePath || !fs.existsSync(filePath)) {
     return res.status(404).json({ error: 'Data file not found' });
   }
-  const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  res.json(data);
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: 'Invalid JSON' });
+  }
 });
 
-// 数据写入API（管理界面用）
+// 数据写入API
 app.put('/api/data/:type', (req, res) => {
-  const filePath = path.join(__dirname, 'src', 'data', `${req.params.type}.json`);
+  const filePath = safePath(req.params.type);
+  if (!filePath) {
+    return res.status(400).json({ error: 'Invalid data type' });
+  }
   try {
-    fs.writeFileSync(filePath, JSON.stringify(req.body, null, 2), 'utf-8');
+    // 验证 JSON 格式
+    const json = JSON.stringify(req.body, null, 2);
+    JSON.parse(json); // 确保是有效 JSON
+    fs.writeFileSync(filePath, json, 'utf-8');
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });

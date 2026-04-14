@@ -19,14 +19,11 @@ export function renderCommonCommands() {
     const items = commands.filter(c => c.category === cat);
     if (items.length === 0) return;
 
-    if (cat !== '基础') {
-      const subTitle = createSubTitle(categoryLabels[cat]);
-      if (cat === '危险') {
-        subTitle.style.color = '#ff4d4f';
-      }
-      subTitle.style.marginTop = '20px';
-      frag.appendChild(subTitle);
+    const subTitle = createSubTitle(categoryLabels[cat]);
+    if (cat === '危险') {
+      subTitle.style.color = 'var(--danger)';
     }
+    frag.appendChild(subTitle);
 
     items.forEach(item => {
       frag.appendChild(createCmdCard(item.cmd, item.desc));

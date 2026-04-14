@@ -1,4 +1,8 @@
 import characters from '../data/characters.json';
+import weapons from '../data/weapons.json';
+import bosses from '../data/bosses.json';
+import scenes from '../data/scenes.json';
+import gacha from '../data/gacha.json';
 import commands from '../data/commands.json';
 
 let searchData = [];
@@ -6,7 +10,6 @@ let searchData = [];
 export function buildSearchIndex() {
   searchData = [];
 
-  // 角色
   characters.forEach(c => {
     searchData.push({
       code: c.cmd,
@@ -16,7 +19,45 @@ export function buildSearchIndex() {
     });
   });
 
-  // 常用指令
+  weapons.forEach(w => {
+    searchData.push({
+      code: w.cmd,
+      desc: `${w.name} (${w.typeLabel || w.type})`,
+      module: '武器',
+      sectionId: 'weaponSection',
+    });
+  });
+
+  bosses.forEach(b => {
+    (b.items || []).forEach(item => {
+      searchData.push({
+        code: item.cmd,
+        desc: `${b.name}${item.desc ? ' - ' + item.desc : ''}`,
+        module: 'Boss',
+        sectionId: 'bossSection',
+      });
+    });
+  });
+
+  scenes.forEach(s => {
+    searchData.push({
+      code: s.cmd,
+      desc: s.name,
+      module: '场景',
+      sectionId: 'sceneSection',
+    });
+  });
+
+  gacha.forEach(g => {
+    const names = [...(g.upper5 || []), ...(g.lower5 || [])].join(', ');
+    searchData.push({
+      code: g.title || g.version,
+      desc: names,
+      module: '祈愿',
+      sectionId: 'questNewSection',
+    });
+  });
+
   commands.forEach(c => {
     searchData.push({
       code: c.cmd,
@@ -47,30 +88,23 @@ export function searchContent(term) {
   ).slice(0, 20);
 
   if (results.length === 0) {
-    container.innerHTML = '<div class="search-result-item" style="color:#999;text-align:center;">未找到结果</div>';
+    container.innerHTML = '<div class="search-results__item" style="color:var(--text-muted);text-align:center">未找到结果</div>';
   } else {
     container.innerHTML = results.map(r => `
-      <div class="search-result-item" data-section="${r.sectionId}">
-        <div class="search-result-code">${highlightText(r.code, term)}</div>
-        <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+      <div class="search-results__item" data-section="${r.sectionId}">
+        <div class="search-results__code">${highlightText(r.code, term)}</div>
+        <div class="search-results__meta">
           <span>${highlightText(r.desc, term)}</span>
-          <span class="search-result-module">${r.module}</span>
+          <span class="search-badge">${r.module}</span>
         </div>
       </div>
     `).join('');
 
-    container.querySelectorAll('.search-result-item').forEach(item => {
+    container.querySelectorAll('.search-results__item').forEach(item => {
       item.addEventListener('click', () => {
         const sectionId = item.dataset.section;
         if (sectionId) {
-          document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
-          const target = document.getElementById(sectionId);
-          if (target) {
-            target.style.display = 'block';
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-              btn.classList.toggle('active', btn.dataset.section === sectionId);
-            });
-          }
+          window.location.hash = '#' + sectionId;
         }
         container.style.display = 'none';
       });
@@ -84,6 +118,6 @@ export function searchContent(term) {
 
 function highlightText(text, term) {
   if (!term) return text;
-  const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  return text.replace(regex, '<span class="highlight">$1</span>');
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<span class="highlight">$1</span>');
 }

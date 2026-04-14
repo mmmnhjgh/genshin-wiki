@@ -3,39 +3,61 @@ import { renderNavBar } from './components/navBar.js';
 import { renderCopyTip } from './components/copyTip.js';
 import { renderAllSections } from './components/section.js';
 import { state } from './store/state.js';
-
 import { buildSearchIndex } from './utils/search.js';
 
 export function initApp() {
   const app = document.getElementById('app');
 
-  // 搜索结果容器（全局固定定位）
+  app.appendChild(renderCopyTip());
+
   const searchResults = document.createElement('div');
   searchResults.id = 'searchResults';
-  searchResults.className = 'search-results-container';
+  searchResults.className = 'search-results';
   app.appendChild(searchResults);
 
   const searchCount = document.createElement('div');
   searchCount.id = 'searchCount';
-  searchCount.className = 'search-result-count';
+  searchCount.className = 'search-count';
   app.appendChild(searchCount);
 
-  // 渲染复制提示（全局固定定位）
-  app.appendChild(renderCopyTip());
-
-  // 渲染头部
   app.appendChild(renderHeader());
-
-  // 渲染导航栏
   app.appendChild(renderNavBar());
 
-  // 渲染所有内容区块
   const sections = renderAllSections();
   sections.forEach(s => app.appendChild(s));
 
-  // 默认显示首页
-  state.currentSection = 'homeSection';
+  const backToTop = document.createElement('button');
+  backToTop.className = 'back-to-top';
+  backToTop.id = 'backToTop';
+  backToTop.textContent = '↑';
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  app.appendChild(backToTop);
 
-  // 构建搜索索引
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > 300);
+  });
+
+  initTheme();
   buildSearchIndex();
+
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    state.currentSection = hash;
+  } else {
+    state.currentSection = 'homeSection';
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+
+  const toggle = document.getElementById('themeToggle');
+  if (toggle) {
+    toggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+  }
 }
