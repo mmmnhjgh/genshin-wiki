@@ -236,12 +236,13 @@ body::before {
   word-break: break-all;
 }
 .cmd-card__desc {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 60px;
+  flex-shrink: 0;
+  max-width: 180px;
 }
 .cmd-card__actions { display: flex; gap: 6px; flex-shrink: 0; }
 
@@ -336,6 +337,9 @@ body::before {
 /* ===== Stars ===== */
 .star-5 { color: var(--star-5); font-weight: 600; }
 .star-4 { color: var(--star-4); font-weight: 500; }
+.star-3 { color: #5eb5d6; font-weight: 500; }
+.star-2 { color: #82c978; font-weight: 400; }
+.star-1 { color: #9a9a9a; font-weight: 400; }
 
 /* ===== Spiral ===== */
 .split-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
