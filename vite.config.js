@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
-export default defineConfig({
-  base: '/genshin-wiki/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/genshin-wiki/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -10,4 +10,4 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
-});
+}));

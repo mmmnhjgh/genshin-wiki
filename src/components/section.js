@@ -25,7 +25,7 @@ const pageRenderers = {
 export function renderAllSections() {
   const sections = [];
 
-  for (const [id, { render }] of Object.entries(pageRenderers)) {
+  for (const [id, { title, render }] of Object.entries(pageRenderers)) {
     const section = document.createElement('section');
     section.id = id;
     section.className = 'content-section';
@@ -34,26 +34,33 @@ export function renderAllSections() {
     const wrapper = document.createElement('div');
     wrapper.className = 'section-wrapper';
 
-    if (id === 'homeSection') {
+    // 同步渲染内容
+    try {
       const content = render();
-      if (Array.isArray(content)) content.forEach(c => wrapper.appendChild(c));
-      else wrapper.appendChild(content);
-      section.appendChild(wrapper);
-      sections.push(section);
-      continue;
+      if (Array.isArray(content)) {
+        content.forEach(c => wrapper.appendChild(c));
+      } else if (content instanceof Node) {
+        wrapper.appendChild(content);
+      }
+    } catch (e) {
+      console.error(`Error rendering ${id}:`, e);
+      const errCard = document.createElement('div');
+      errCard.className = 'cmd-card';
+      errCard.textContent = `加载失败: ${e.message}`;
+      wrapper.appendChild(errCard);
     }
 
-    wrapper.dataset.loaded = 'false';
     section.appendChild(wrapper);
     sections.push(section);
   }
 
-  const placeholderSections = [
+  // 占位区块
+  const placeholders = [
     'itemSection', 'questSection', 'achievementSection',
     'geographySection', 'tutorialSection', 'eventSection', 'loadTipSection',
   ];
 
-  placeholderSections.forEach(id => {
+  placeholders.forEach(id => {
     const section = document.createElement('section');
     section.id = id;
     section.className = 'content-section';
@@ -76,33 +83,5 @@ export function renderAllSections() {
     sections.push(section);
   });
 
-  setupLazyLoad();
-
   return sections;
-}
-
-function setupLazyLoad() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const wrapper = entry.target;
-      if (wrapper.dataset.loaded === 'true') return;
-
-      const section = wrapper.closest('.content-section');
-      if (!section) return;
-
-      const id = section.id;
-      const info = pageRenderers[id];
-      if (!info) return;
-
-      const content = info.render();
-      if (Array.isArray(content)) content.forEach(c => wrapper.appendChild(c));
-      else wrapper.appendChild(content);
-
-      wrapper.dataset.loaded = 'true';
-      observer.unobserve(wrapper);
-    });
-  }, { rootMargin: '200px' });
-
-  document.querySelectorAll('.section-wrapper[data-loaded]').forEach(w => observer.observe(w));
 }
